@@ -5,6 +5,8 @@ public class ToDoBuilder {
 	private static ToDoBuilder instance = new ToDoBuilder();
 	private String id = null;
 	private String description = "";
+	private String username = "";
+	private String password = "";
 
 	private ToDoBuilder() {
 	}
@@ -13,8 +15,10 @@ public class ToDoBuilder {
 		return instance;
 	}
 
-	public ToDoBuilder withDescription(String description) {
+	public ToDoBuilder withDescription(String description, String username, String password) {
 		this.description = description;
+		this.username = username;
+		this.password = password;
 		return instance;
 	}
 
@@ -24,7 +28,7 @@ public class ToDoBuilder {
 	}
 
 	public ToDo build() {
-		ToDo result = new ToDo(this.description);
+		ToDo result = new ToDo(this.description, this.username, this.password);
 		if (id != null)
 			result.setId(id);
 		return result;
