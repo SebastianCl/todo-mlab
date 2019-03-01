@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Optional;
 
 import javax.validation.Valid;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +30,14 @@ import com.apress.mlab.validation.ToDoValidationErrorBuilder;
 public class ProfileUserController {
 
 	private ProfileUserRepository profileUserRepository;
+	
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	
 	@Autowired
-	public ProfileUserController(ProfileUserRepository ProfileUserRepository) {
+	public ProfileUserController(ProfileUserRepository ProfileUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.profileUserRepository = ProfileUserRepository;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	@GetMapping("/user")
@@ -65,6 +69,8 @@ public class ProfileUserController {
 		if (errors.hasErrors()) {
 			return ResponseEntity.badRequest().body(ToDoValidationErrorBuilder.fromBindingErrors(errors));
 		}
+		//Encrypt
+		profileUser.setPassword(bCryptPasswordEncoder.encode(profileUser.getPassword()));
 		ProfileUser result = profileUserRepository.save(profileUser);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId())
 				.toUri();
