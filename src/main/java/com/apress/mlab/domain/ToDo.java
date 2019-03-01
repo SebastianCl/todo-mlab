@@ -18,13 +18,6 @@ public class ToDo {
 	@NotNull
 	@NotBlank
 	private String description;
-	@NotNull
-	@NotBlank
-	private String username;
-
-	@NotNull
-	@NotBlank
-	private String password;
 	
 	private LocalDateTime created;
 	private LocalDateTime modified;
@@ -37,10 +30,8 @@ public class ToDo {
 		this.modified = date;
 	}
 
-	public ToDo(String description, String username, String password) {
+	public ToDo(String description) {
 		this();
 		this.description = description;
-		this.username = username;
-		this.password = password;
 	}
 }
